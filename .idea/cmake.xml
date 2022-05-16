@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeSharedSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Release-Visual Studio" ENABLED="true" GENERATION_DIR="out/release-msvc-x64" CONFIG_NAME="Release" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-G &quot;Visual Studio 17 2022&quot; -T v143,host=x64 -A x64 -DCMAKE_TOOLCHAIN_FILE=&quot;d:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake&quot; -DVCPKG_TARGET_TRIPLET=x64-windows-static-md -DBUILD_SHARED_LIBS=ON -DCMAKE_PREFIX_PATH=d:/dev/cpp/lhwservice/install" />
+      <configuration PROFILE_NAME="Debug-Visual Studio" ENABLED="true" GENERATION_DIR="out/debug-msvc-x64" CONFIG_NAME="Debug" TOOLCHAIN_NAME="Visual Studio" GENERATION_OPTIONS="-G &quot;Visual Studio 17 2022&quot; -T v143,host=x64 -A x64 -DCMAKE_TOOLCHAIN_FILE=&quot;d:/dev/vcpkg/scripts/buildsystems/vcpkg.cmake&quot;  -DVCPKG_TARGET_TRIPLET=x64-windows-static-md -DBUILD_SHARED_LIBS=ON -DCMAKE_PREFIX_PATH=d:/dev/cpp/lhwservice/install" />
+    </configurations>
+  </component>
+</project>

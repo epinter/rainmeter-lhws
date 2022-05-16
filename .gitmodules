@@ -1,0 +1,4 @@
+[submodule "rainmeter-plugin-sdk"]
+	path = rainmeter-plugin-sdk
+	url = https://github.com/rainmeter/rainmeter-plugin-sdk
+	branch = master
