@@ -40,7 +40,7 @@ namespace LhwsPlugin {
                             );
                     if (appEntry->dwTime0 != 0 && appEntry->dwFrames != 0 &&
                         pMem->dwLastForegroundAppProcessID == appEntry->dwProcessID) {
-                        return {appEntry->szName,
+                        RtssAppStat stat = { appEntry->szName,
                                 appEntry->dwProcessID,
                                 static_cast<unsigned long>(std::round(
                                         1000.0 * appEntry->dwFrames / (appEntry->dwTime1 - appEntry->dwTime0))),
@@ -52,6 +52,11 @@ namespace LhwsPlugin {
                                 appEntry->dwStatFrameTimeAvg,
                                 appEntry->dwStatFrameTimeMax
                         };
+
+                        UnmapViewOfFile(pMapAddr);
+                        CloseHandle(hMapFile);
+
+                        return stat;
                     }
                 }
 
