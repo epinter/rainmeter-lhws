@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "rainmeter-lhws",
+  "version-string": "0.2.0",
+  "description": "LibreHardwareService plugin for Rainmeter",
+  "homepage": "https://github.com/epinter/rainmeter-lhws",
+  "license": "MPL-2.0",
+  "features": {
+    "plugin": {
+      "supports": "(windows & x64) | (windows & x86)",
+      "description": "Rainmeter plugin",
+      "dependencies": [
+        "boost-locale",
+        "boost-format"
+      ]
+    }
+  },
+  "default-features": [
+    "plugin"
+  ]
+}

@@ -11,7 +11,12 @@ This plugin collects hardware sensors from [LibreHardwareService](https://github
 
 ## Requirements
 
-[LibreHardwareService](https://github.com/epinter/LibreHardwareService) and [Visual C++ Redistributable 2022](https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist).
+- [LibreHardwareService](https://github.com/epinter/LibreHardwareService)
+- [Visual C++ Redistributable 2022](https://docs.microsoft.com/en-US/cpp/windows/latest-supported-vc-redist)
+- [CMake](https://cmake.org/)
+- [vcpkg](https://vcpkg.io/en/)
+- [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/community/)
+- [LibHardwareService](https://github.com/epinter/lhwservice)
 
 ## Usage
 
@@ -19,8 +24,11 @@ Copy LibreHardwareService.dll to %APPDATA%/Rainmeter/Plugins and setup measures 
 
 ## Building
 
-This library depends on [LibHardwareService](https://github.com/epinter/lhwservice) and Boost. The dependencies are found using CMake find_package, so [vcpkg](https://vcpkg.io) is strongly recommended for Boost. Scripts for building can be found in cmake directory.
-Visual Studio 2022 and CMake are required.
+The library [LibHardwareService](https://github.com/epinter/lhwservice) is searched by findpackage in a parent directory or inside extern. Scripts for building can be found in cmake directory.
+
+```
+./cmake/build.ps1
+```
 
 ## Measure Examples
 

@@ -1,0 +1,195 @@
+﻿{
+  "version": 5,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 24,
+    "patch": 0
+  },
+  "buildPresets": [
+    {
+      "name": "x64-debug",
+      "displayName": "MSVC x64 Debug",
+      "configurePreset": "x64",
+      "configuration": "Debug"
+    },
+    {
+      "name": "x64-release",
+      "displayName": "MSVC x64 Release",
+      "configurePreset": "x64",
+      "configuration": "Release"
+    },
+    {
+      "name": "x86-debug",
+      "displayName": "MSVC x86-Debug",
+      "configurePreset": "x86",
+      "configuration": "Debug"
+    },
+    {
+      "name": "x86-release",
+      "displayName": "MSVC x86-Release",
+      "configurePreset": "x86",
+      "configuration": "Release"
+    },
+    {
+      "name": "x64-clang-debug",
+      "displayName": "ClangCL x64-Debug",
+      "configurePreset": "x64-clang",
+      "configuration": "Debug"
+    },
+    {
+      "name": "x64-clang-release",
+      "displayName": "ClangCL x64-Release",
+      "configurePreset": "x64-clang",
+      "configuration": "Release"
+    },
+    {
+      "name": "x86-clang-debug",
+      "displayName": "ClangCL x86-Debug",
+      "configurePreset": "x86-clang",
+      "configuration": "Debug"
+    },
+    {
+      "name": "x86-clang-release",
+      "displayName": "ClangCL x86-Release",
+      "configurePreset": "x86-clang",
+      "configuration": "Release"
+    }
+  ],
+  "configurePresets": [
+    {
+      "name": "common",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build",
+      "installDir": "${sourceDir}/build/install"
+    },
+    {
+      "name": "vcpkg-x64",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "STRING",
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        },
+        "VCPKG_TARGET_TRIPLET": "x64-windows-static-md"
+      }
+    },
+    {
+      "name": "vcpkg-x86",
+      "hidden": true,
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": {
+          "type": "STRING",
+          "value": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+        },
+        "VCPKG_TARGET_TRIPLET": "x86-windows-static-md"
+      }
+    },
+    {
+      "name": "win64",
+      "hidden": true,
+      "architecture": "x64",
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL",
+        "TARGET_ARCHITECTURE": "x64"
+      }
+    },
+    {
+      "name": "win32",
+      "hidden": true,
+      "architecture": "win32",
+      "cacheVariables": {
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL",
+        "TARGET_ARCHITECTURE": "x86"
+      }
+    },
+    {
+      "name": "msvc",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_CXX_FLAGS": "/W4 /WX /EHs /MP $penv{CXXFLAGS}" },
+      "generator": "Visual Studio 17 2022",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "intelliSenseMode": "windows-msvc-x64",
+          "enableMicrosoftCodeAnalysis": true,
+          "enableClangTidyCodeAnalysis": true
+        }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "clang",
+      "hidden": true,
+      "cacheVariables": { "CMAKE_CXX_FLAGS": "/W4 /WX /EHs /MP $penv{CXXFLAGS}" },
+      "generator": "Visual Studio 17 2022",
+      "toolset": "CLangCL",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "intelliSenseMode": "windows-clang-x64",
+          "enableMicrosoftCodeAnalysis": true,
+          "enableClangTidyCodeAnalysis": true
+        }
+      },
+      "condition": {
+        "type": "equals",
+        "lhs": "${hostSystemName}",
+        "rhs": "Windows"
+      }
+    },
+    {
+      "name": "x64",
+      "inherits": [
+        "common",
+        "msvc",
+        "win64",
+        "vcpkg-x64"
+      ],
+      "architecture": {
+        "value": "x64",
+        "strategy": "set"
+      }
+    },
+    {
+      "name": "x64-clang",
+      "inherits": [
+        "common",
+        "clang",
+        "win64",
+        "vcpkg-x64"
+      ],
+      "architecture": {
+        "value": "win32",
+        "strategy": "set"
+      }
+    },
+    {
+      "name": "x86",
+      "inherits": [
+        "common",
+        "msvc",
+        "win32",
+        "vcpkg-x86"
+      ],
+      "architecture": {
+        "value": "win32",
+        "strategy": "set"
+      }
+    },
+    {
+      "name": "x86-clang",
+      "inherits": [
+        "common",
+        "clang",
+        "win32",
+        "vcpkg-x86"
+      ],
+      "architecture": {
+        "value": "win32",
+        "strategy": "set"
+      }
+    }
+  ]
+}
