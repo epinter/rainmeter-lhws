@@ -15,6 +15,10 @@
 #define ATASMART_ENDOFLIFE L"End-of-Life"
 #define ATASMART_OK L"OK"
 
+#define NVMESMART_CRITICAL L"Critical"
+#define NVMESMART_WARNING L"Warning"
+#define NVMESMART_OK L"OK"
+
 #define OPTION_HWSTATUSTYPE L"HwStatusType"
 #define OPTION_HWSTATUSITEM L"HwStatusItem"
 #define OPTION_SENSORNAME L"SensorName"

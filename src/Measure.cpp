@@ -168,6 +168,18 @@ namespace LhwsPlugin {
             if (boost::iequals(hwStatusItem, "warningCompositeTemperatureTime")) {
                 return static_cast<double>(nvmeSmart.getWarningCompositeTemperatureTime());
             }
+            if (boost::iequals(hwStatusItem, SMART_ITEM_STATUS)) {
+                if((nvmeSmart.getCriticalWarning() & 0x4) == 4 /*bit 2, media errors*/
+                    || (nvmeSmart.getCriticalWarning() & 0x8) == 8 /*bit 3, media readonly*/) {
+                        stringValue = NVMESMART_CRITICAL;
+                } else if((nvmeSmart.getCriticalWarning() & 0x1) == 1 /*bit 0, availableSpare*/
+                    || nvmeSmart.getPercentageUsed() >= 100 //life
+                    || nvmeSmart.getAvailableSpare() < nvmeSmart.getAvailableSpareThreshold()) {
+                    stringValue = NVMESMART_WARNING;
+                } else {
+                    stringValue = NVMESMART_OK;
+                }
+            }
         } catch (std::exception const &e) {
             logError(e.what());
         }
