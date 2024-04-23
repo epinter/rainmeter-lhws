@@ -223,7 +223,7 @@ namespace LhwsPlugin {
 
         try {
             lhws::Sensor sensor;
-            if(sensorId.empty()) {
+            if (sensorId.empty()) {
                 sensor = hardwareService.getSensorByName(
                         boost::locale::conv::utf_to_utf<char>(sensorName),
                         boost::locale::conv::utf_to_utf<char>(sensorType),
@@ -232,7 +232,13 @@ namespace LhwsPlugin {
                 sensor = hardwareService.getSensorById(boost::locale::conv::utf_to_utf<char>(sensorId));
             }
 
-            return sensor.getValue();
+            if (boost::iequals(sensorMetricType, "max")) {
+                return sensor.getMax();
+            } else if (boost::iequals(sensorMetricType, "min")) {
+                return sensor.getMin();
+            } else {
+                return sensor.getValue();
+            }
         } catch (std::exception const &e) {
             logError(e.what());
         }
@@ -290,6 +296,7 @@ namespace LhwsPlugin {
         sensorType = api.readString(OPTION_SENSORTYPE, L"");
         hardwareName = api.readString(OPTION_HARDWARENAME, L"");
         hardwareType = api.readString(OPTION_HARDWARETYPE, L"");
+        sensorMetricType = api.readString(OPTION_SENSORMETRICTYPE, L"value");
         sensorId = api.readString(OPTION_SENSORID, L"");
         staleAfterSecs = api.readInt(OPTION_STALEAFTERSECS, VALUE_STALE_SECS);
 

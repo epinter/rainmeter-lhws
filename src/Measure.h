@@ -35,6 +35,7 @@ namespace LhwsPlugin {
         std::wstring hwStatusItem{};
         std::wstring stringValue{};
         std::wstring sensorId{};
+        std::wstring sensorMetricType{};
         std::wstring fps{};
         double lastValue = -1.0f;
         int staleAfterSecs = VALUE_STALE_SECS;

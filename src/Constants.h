@@ -26,6 +26,7 @@
 #define OPTION_HARDWARENAME L"HardwareName"
 #define OPTION_HARDWARETYPE L"HardwareType"
 #define OPTION_SENSORID L"SensorIdentifier"
+#define OPTION_SENSORMETRICTYPE L"SensorMetricType"
 #define OPTION_STALEAFTERSECS L"StaleAfterSecs"
 
 #define SMART_ITEM_STATUS "Status"
