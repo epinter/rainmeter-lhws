@@ -82,4 +82,4 @@ namespace Rainmeter {
 
         [[maybe_unused]] void logWarning(std::wstring const &message);
     };
-}
+}// namespace Rainmeter

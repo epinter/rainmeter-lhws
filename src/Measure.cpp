@@ -169,12 +169,12 @@ namespace LhwsPlugin {
                 return static_cast<double>(nvmeSmart.getWarningCompositeTemperatureTime());
             }
             if (boost::iequals(hwStatusItem, SMART_ITEM_STATUS)) {
-                if((nvmeSmart.getCriticalWarning() & 0x4) == 4 /*bit 2, media errors*/
+                if ((nvmeSmart.getCriticalWarning() & 0x4) == 4 /*bit 2, media errors*/
                     || (nvmeSmart.getCriticalWarning() & 0x8) == 8 /*bit 3, media readonly*/) {
-                        stringValue = NVMESMART_CRITICAL;
-                } else if((nvmeSmart.getCriticalWarning() & 0x1) == 1 /*bit 0, availableSpare*/
-                    || nvmeSmart.getPercentageUsed() >= 100 //life
-                    || nvmeSmart.getAvailableSpare() < nvmeSmart.getAvailableSpareThreshold()) {
+                    stringValue = NVMESMART_CRITICAL;
+                } else if ((nvmeSmart.getCriticalWarning() & 0x1) == 1 /*bit 0, availableSpare*/
+                           || nvmeSmart.getPercentageUsed() >= 100     //life
+                           || nvmeSmart.getAvailableSpare() < nvmeSmart.getAvailableSpareThreshold()) {
                     stringValue = NVMESMART_WARNING;
                 } else {
                     stringValue = NVMESMART_OK;
@@ -281,8 +281,7 @@ namespace LhwsPlugin {
         }
 
         auto currentInterval = std::chrono::milliseconds(static_cast<long long>(
-                                                                 std::round(static_cast<long double>(realIntervalMs) / 500.0) * 500)
-        );
+                std::round(static_cast<long double>(realIntervalMs) / 500.0) * 500));
 
         previousUpdate = std::chrono::steady_clock::now();
 
@@ -309,4 +308,4 @@ namespace LhwsPlugin {
         updateInterval = aInterval;
         timer.setTime(updateInterval);
     }
-}
+}// namespace LhwsPlugin

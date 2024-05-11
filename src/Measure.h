@@ -45,12 +45,12 @@ namespace LhwsPlugin {
         std::chrono::time_point<std::chrono::steady_clock> previousUpdate{std::chrono::steady_clock::now()};
 
         BackgroundTimer timer{std::chrono::milliseconds(1000), [this]() {
-            if (!mtxValue.try_lock()) {
-                return;
-            }
-            std::scoped_lock lock(std::adopt_lock, mtxValue);
-            doUpdate();
-        }};
+                                  if (!mtxValue.try_lock()) {
+                                      return;
+                                  }
+                                  std::scoped_lock lock(std::adopt_lock, mtxValue);
+                                  doUpdate();
+                              }};
 
         void loadOptions();
 
@@ -85,4 +85,4 @@ namespace LhwsPlugin {
 
         void setUpdateInterval(std::chrono::milliseconds &aInterval);
     };
-}
+}// namespace LhwsPlugin

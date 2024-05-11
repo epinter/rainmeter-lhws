@@ -56,4 +56,4 @@ namespace LhwsPlugin {
             BackgroundTimer::time = aTime;
         }
     };
-} // LhwsPlugin
+}// namespace LhwsPlugin

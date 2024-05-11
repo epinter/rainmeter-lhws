@@ -25,7 +25,7 @@ namespace LhwsPlugin {
     }
 
     PLUGIN_EXPORT void Reload([[maybe_unused]] void *data, [[maybe_unused]] void *rm,
-                              [[maybe_unused]] double *maxValue) { // NOLINT(readability-non-const-parameter)
+                              [[maybe_unused]] double *maxValue) {// NOLINT(readability-non-const-parameter)
         auto *measure = static_cast<Measure *>(data);
         measure->reload(*maxValue);
     }
@@ -51,4 +51,4 @@ namespace LhwsPlugin {
     PLUGIN_EXPORT void Finalize([[maybe_unused]] void *data) {
         delete (static_cast<Measure *>(data));
     }
-}
+}// namespace LhwsPlugin

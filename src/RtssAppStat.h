@@ -27,6 +27,7 @@ namespace LhwsPlugin {
         unsigned long frametimeMin{};
         unsigned long frametimeAvg{};
         unsigned long frametimeMax{};
+
     public:
         RtssAppStat(std::string appName, unsigned long processId, unsigned long framerate, unsigned long frametime,
                     unsigned long framerateMin, unsigned long framerateAvg, unsigned long framerateMax, unsigned long frametimeMin,
@@ -56,4 +57,4 @@ namespace LhwsPlugin {
 
         [[nodiscard]] [[maybe_unused]] unsigned long getFrametimeMax() const;
     };
-}
+}// namespace LhwsPlugin

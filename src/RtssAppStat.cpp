@@ -20,10 +20,10 @@ namespace LhwsPlugin {
     RtssAppStat::RtssAppStat(std::string appName, unsigned long processId, unsigned long framerate, unsigned long frametime,
                              unsigned long framerateMin, unsigned long framerateAvg, unsigned long framerateMax,
                              unsigned long frametimeMin, unsigned long frametimeAvg, unsigned long frametimeMax)
-            : appName(std::move(appName)), processId(processId), framerate(framerate), frametime(frametime),
-              framerateMin(framerateMin),
-              framerateAvg(framerateAvg), framerateMax(framerateMax), frametimeMin(frametimeMin), frametimeAvg(frametimeAvg),
-              frametimeMax(frametimeMax) {}
+        : appName(std::move(appName)), processId(processId), framerate(framerate), frametime(frametime),
+          framerateMin(framerateMin),
+          framerateAvg(framerateAvg), framerateMax(framerateMax), frametimeMin(frametimeMin), frametimeAvg(frametimeAvg),
+          frametimeMax(frametimeMax) {}
 
     RtssAppStat RtssAppStat::getStatLastForeground() {
         HANDLE hMapFile = OpenFileMapping(FILE_MAP_READ, FALSE, "RTSSSharedMemoryV2");
@@ -36,22 +36,20 @@ namespace LhwsPlugin {
                 if ((pMem->dwSignature == 'RTSS') && (pMem->dwVersion >= 0x00020000)) {
                     auto appEntry =
                             reinterpret_cast<RTSS_SHARED_MEMORY::LPRTSS_SHARED_MEMORY_APP_ENTRY>(
-                                    ((LPBYTE) pMem + pMem->dwAppArrOffset + pMem->dwLastForegroundApp * pMem->dwAppEntrySize)
-                            );
+                                    ((LPBYTE) pMem + pMem->dwAppArrOffset + pMem->dwLastForegroundApp * pMem->dwAppEntrySize));
                     if (appEntry->dwTime0 != 0 && appEntry->dwFrames != 0 &&
                         pMem->dwLastForegroundAppProcessID == appEntry->dwProcessID) {
-                        RtssAppStat stat = { appEntry->szName,
-                                appEntry->dwProcessID,
-                                static_cast<unsigned long>(std::round(
-                                        1000.0 * appEntry->dwFrames / (appEntry->dwTime1 - appEntry->dwTime0))),
-                                appEntry->dwFrameTime,
-                                appEntry->dwStatFramerateMin,
-                                appEntry->dwStatFramerateAvg,
-                                appEntry->dwStatFramerateMax,
-                                appEntry->dwStatFrameTimeMin,
-                                appEntry->dwStatFrameTimeAvg,
-                                appEntry->dwStatFrameTimeMax
-                        };
+                        RtssAppStat stat = {appEntry->szName,
+                                            appEntry->dwProcessID,
+                                            static_cast<unsigned long>(std::round(
+                                                    1000.0 * appEntry->dwFrames / (appEntry->dwTime1 - appEntry->dwTime0))),
+                                            appEntry->dwFrameTime,
+                                            appEntry->dwStatFramerateMin,
+                                            appEntry->dwStatFramerateAvg,
+                                            appEntry->dwStatFramerateMax,
+                                            appEntry->dwStatFrameTimeMin,
+                                            appEntry->dwStatFrameTimeAvg,
+                                            appEntry->dwStatFrameTimeMax};
 
                         UnmapViewOfFile(pMapAddr);
                         CloseHandle(hMapFile);
@@ -108,4 +106,4 @@ namespace LhwsPlugin {
     unsigned long RtssAppStat::getFrametimeMax() const {
         return frametimeMax;
     }
-}
+}// namespace LhwsPlugin
