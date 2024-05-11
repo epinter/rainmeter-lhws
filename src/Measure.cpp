@@ -236,6 +236,13 @@ namespace LhwsPlugin {
                 return sensor.getMax();
             } else if (boost::iequals(sensorMetricType, "min")) {
                 return sensor.getMin();
+            } else if (boost::iequals(sensorMetricType, "avg")) {
+                if (sensor.getValues().size() == 0) {
+                    return sensor.getValue();
+                } else if (sensor.getValues().size() == 1) {
+                    return ((sensor.getValue() + sensor.getValues().at(0).getValue()) / 2);
+                }
+                return avgSensor(sensor.getValues());
             } else {
                 return sensor.getValue();
             }
@@ -265,6 +272,43 @@ namespace LhwsPlugin {
         }
 
         Measure::lastValue = value;
+    }
+
+    double Measure::avgSensor(std::vector<lhws::SensorValue> vec) {
+        if (vec.size() == 0) {
+            return 0;
+        }
+
+        float total = 0;
+        int count = 0;
+
+        std::sort(vec.begin(), vec.end(), [](lhws::SensorValue a, lhws::SensorValue b) { return a.getValue() < b.getValue(); });
+
+        auto start = vec.begin();
+        auto end = vec.end();
+        auto size = vec.size();
+
+        //remove first and last elements to exclude peaks and invalid values
+        if (size >= 24) {
+            std::advance(start, static_cast<int>(size * 0.10));
+            std::advance(end, static_cast<int>(size * -0.10));
+        } else if (size >= 12) {
+            std::advance(start, 2);
+            std::advance(end, -2);
+        } else if (size >= 8) {
+            std::advance(start, 1);
+            std::advance(end, -1);
+        }
+
+        for (auto it = start; it != end; it++) {
+            lhws::SensorValue v = *it;
+            if (v.getValue() > 0) {
+                total += v.getValue();
+                count++;
+            }
+        }
+
+        return total / count;
     }
 
     void Measure::calculateUpdateInterval() {

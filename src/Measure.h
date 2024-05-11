@@ -54,6 +54,8 @@ namespace LhwsPlugin {
 
         void loadOptions();
 
+        double avgSensor(std::vector<lhws::SensorValue> vec);
+
     public:
         explicit Measure(Rainmeter::API const &rm);
 
