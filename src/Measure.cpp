@@ -242,7 +242,15 @@ namespace LhwsPlugin {
                 } else if (sensor.getValues().size() == 1) {
                     return ((sensor.getValue() + sensor.getValues().at(0).getValue()) / 2);
                 }
-                return avgSensor(sensor.getValues());
+                return avgSensor(sensor.getValues(), 0);
+            } else if (boost::iequals(sensorMetricType, "avgRecent")) {
+                if (sensor.getValues().size() == 0) {
+                    return sensor.getValue();
+                } else if (sensor.getValues().size() == 1) {
+                    return ((sensor.getValue() + sensor.getValues().at(0).getValue()) / 2);
+                }
+                double avg = avgSensor(sensor.getValues(), updateInterval.count());
+                return (sensor.getValue() + avg) / 2;
             } else {
                 return sensor.getValue();
             }
@@ -274,41 +282,63 @@ namespace LhwsPlugin {
         Measure::lastValue = value;
     }
 
-    double Measure::avgSensor(std::vector<lhws::SensorValue> vec) {
-        if (vec.size() == 0) {
-            return 0;
+    double Measure::avgSensor(std::vector<lhws::SensorValue> vec, long long avgLastMillis) {
+        lhws::SensorValue last = vec.back();
+
+        long long lastAvgTime = 0;
+        if (avgLastMillis > 0) {
+            lastAvgTime = strTimeToUtcEpochMillis(last.getTime());
         }
 
         float total = 0;
         int count = 0;
 
-        std::sort(vec.begin(), vec.end(), [](lhws::SensorValue a, lhws::SensorValue b) { return a.getValue() < b.getValue(); });
+        std::sort(vec.begin(), vec.end(),
+                  [](lhws::SensorValue a, lhws::SensorValue b) {
+                      return a.getValue() < b.getValue();
+                  });
 
         auto start = vec.begin();
         auto end = vec.end();
         auto size = vec.size();
 
-        //remove first and last elements to exclude peaks and invalid values
-        if (size >= 24) {
-            std::advance(start, static_cast<int>(size * 0.10));
-            std::advance(end, static_cast<int>(size * -0.10));
-        } else if (size >= 12) {
-            std::advance(start, 2);
-            std::advance(end, -2);
-        } else if (size >= 8) {
-            std::advance(start, 1);
-            std::advance(end, -1);
+        if (avgLastMillis == 0) {
+            if (size >= 30) {
+                std::advance(start, static_cast<int>(size * 0.10));
+                std::advance(end, static_cast<int>(size * -0.10));
+            } else if (size >= 12) {
+                std::advance(start, 2);
+                std::advance(end, -2);
+            }
         }
 
         for (auto it = start; it != end; it++) {
             lhws::SensorValue v = *it;
-            if (v.getValue() > 0) {
-                total += v.getValue();
-                count++;
+            if (avgLastMillis > 0) {
+                try {
+                    long long time = strTimeToUtcEpochMillis(v.getTime());
+                    if (time < lastAvgTime - avgLastMillis) {
+                        continue;
+                    }
+                } catch (...) {//ignore
+                }
             }
+            total += v.getValue();
+            count++;
         }
 
-        return total / count;
+        if (count > 0) {
+            return total / count;
+        }
+
+        return last.getValue();
+    }
+
+    long long Measure::strTimeToUtcEpochMillis(std::string strTime) {
+        std::chrono::utc_time<std::chrono::milliseconds> time;
+        std::stringstream is{strTime};
+        std::chrono::from_stream(is, "%4Y-%2m-%2dT%2H:%2M:%S%Z", time);
+        return time.time_since_epoch().count();
     }
 
     void Measure::calculateUpdateInterval() {

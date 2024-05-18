@@ -54,7 +54,9 @@ namespace LhwsPlugin {
 
         void loadOptions();
 
-        double avgSensor(std::vector<lhws::SensorValue> vec);
+        double avgSensor(std::vector<lhws::SensorValue> vec, long long avgLastMillis);
+
+        long long strTimeToUtcEpochMillis(std::string strTime);
 
     public:
         explicit Measure(Rainmeter::API const &rm);
